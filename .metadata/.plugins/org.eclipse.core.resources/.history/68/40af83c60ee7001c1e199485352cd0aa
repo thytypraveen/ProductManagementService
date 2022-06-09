@@ -1,0 +1,15 @@
+package com.ItemCommentService.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+
+	public User createUser(@NotNull User user) {
+        Date d1 = new Date();
+        user.setUpdatedTime(d1);
+        user.setCreatedAt(d1);
+        return userRepository.save(user);
+    }
+
+}

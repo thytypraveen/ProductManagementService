@@ -1,0 +1,102 @@
+package controller;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import repository.CommentsRepository;
+import repository.ItemRepository;
+import service.CommentsService;
+import service.ItemService;
+
+@RestController
+@RequestMapping("/comments")
+public class CommentsController {
+
+	@Autowired
+	private CommentsService commentservice;
+
+	@Autowired
+	private ItemRepository itemRepository;
+
+	@Autowired
+	private CommentsRepository commentrepo;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private ItemService itemService;
+
+
+	@PostMapping("/{userId}/name/{title}")
+	public Comments AddComments(@PathVariable (value = "userId") Long userId,
+			@PathVariable (value = "title") String title,@Valid @RequestBody Comments comment)
+	{
+		return commentservice.addComment(userId, title, comment);
+	}
+
+
+	@GetMapping("/{userId}/name/{title}") 
+	public List<Comments>getAllComments(@PathVariable(value = "userId")Long userId , @PathVariable (value = "title") String title)
+	{ 
+		return  commentservice.getComments(userId, title);
+	}
+
+	
+	@PutMapping("/{uid}/{title}/{comments}")
+	public void updateComment(@PathVariable (value = "uid")Long uid,@PathVariable (value = "title") String title,
+	@PathVariable (value = "comments") String comments,@RequestBody Comments comment) {
+	commentservice.updateComments(uid, title, comments, comment);
+	}
+
+
+
+
+
+	/*
+	 * @DeleteMapping("/user/{userId}/comments/{commentId}") public
+	 * ResponseEntity<?> deleteComment(@PathVariable (value = "userId") Long userId,
+	 * 
+	 * @PathVariable (value = "commentId") Long commentId) { return
+	 * (itemService.getAll(userId)).map(comment -> { commentrepo.delete(comment);
+	 * return ResponseEntity.ok().build(); }).orElseThrow(() -> new
+	 * ResourceNotFoundException("Comment not found with id " + commentId
+	 * +" and postId " + userId)); }
+	 */
+
+
+
+
+
+
+
+
+
+
+
+
+	@DeleteMapping("/{userId}/name/{title}")
+	public void delete(@PathVariable(value = "userId")Long userId,@PathVariable (value = "title") String title) { 
+		commentservice.deleteCommentName(userId, title);
+	}
+	@DeleteMapping("/{id}")
+	public void delete(@PathVariable(value = "id")Long id) { 
+		commentservice.deleteComment(id);
+	}
+
+
+
+
+
+}
+
+
+

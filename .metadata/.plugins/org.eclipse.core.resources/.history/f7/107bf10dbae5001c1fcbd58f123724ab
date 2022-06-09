@@ -1,0 +1,125 @@
+package service;
+
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.apache.catalina.realm.JNDIRealm.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import entity.Item;
+import repository.ItemRepository;
+
+@Service
+public class ItemService {
+
+    @Autowired
+    private ItemRepository itemRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public List<Item> getAll(Long id){
+	      User u =  userRepository.findById(id).get();
+     return itemRepository.findAll().stream().filter(item -> item.getUser().equals(u)).collect(Collectors.toList());
+    }
+    
+
+    public Optional<Item> addItem(Long id, Item item) {
+        Date d1 = new Date();
+        item.setReminderTime(d1);
+        item.setCreatedTime(d1);
+        item.setUpdatedTime(d1);
+        return Optional.ofNullable(userRepository.findById(id).map(user -> {
+            item.setUser(user);
+            return itemRepository.save(item);
+        }).orElseThrow(() -> new ResourceNotFoundException("UserId" + id + "Not Found")));
+    }
+
+    public void deleteItem(Long id){
+        List<Item> l1 = getAll(id);
+        Iterator<Item> itr = l1.listIterator();
+        while (itr.hasNext()){
+            itemRepository.delete(itr.next());
+        }
+    }
+
+    public List<Item> getItemByName(Long id, String title){
+      List<Item> l1 = getAll(id);
+      return l1.stream().filter(item -> item.getTitle().startsWith(title)).collect(Collectors.toList());
+    }
+    
+    public List<Item> getIgetItemByIdtemById(Long id){
+    	 User u =  userRepository.findById(id).get();
+         return itemRepository.findAll().stream().filter(item -> item.getUser().equals(u)).collect(Collectors.toList());
+    }
+    
+   
+
+    public void deleteItemName(Long id, String title){
+        List<Item> l1 = getItemByName(id,title);
+        Iterator<Item> itr = l1.listIterator();
+        while (itr.hasNext()){
+            itemRepository.delete(itr.next());
+        }
+    }
+
+    public void update(Long id, String title, Item item){
+        List<Item> m = getItemByName(id,title);
+        Iterator<Item> itr = m.listIterator();
+        while (itr.hasNext()){
+            Item itm;
+          itm =  itr.next();
+          itm.setTitle(item.getTitle());
+          itm.setDescription(item.getDescription());
+          itm.setReminderTime(item.getReminderTime());
+            Date d1 = new Date();
+            itm.setUpdatedTime(d1);
+            itemRepository.save(itm);
+        }
+    }
+
+    public void updateReminder(Long id, String title, Item item){
+        List<Item> lst = getItemByName(id,title);
+        Iterator<Item> itr = lst.listIterator();
+        while (itr.hasNext()) {
+            Item myItem = itr.next();
+            (myItem).setReminderTime(item.getReminderTime());
+            itemRepository.save(myItem);
+        }
+    }
+    
+    
+    
+    
+    
+    public List<Item> getAllPriority() {
+		
+		return (List<Item>) itemRepository.findAll();	
+}
+
+public ResponseEntity<Item> getPriorityById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
+	Item items = itemRepository.findById(id)
+			.orElseThrow(() -> new ResourceNotFoundException("Priority not found for this id :: " + id));
+	return ResponseEntity.ok().body(items);
+}
+    
+    
+    
+    
+    public String deletePriorityById(Long id) {
+    	itemRepository.deleteById(id);
+    	return "Priority deleted" +id;
+    }
+    
+    public Item UpdatePriority(Long id,Item item) {
+    	Item existingpriority = itemRepository.findById(item.getItemId()).orElse(null);
+    	existingpriority.setPriority(item.getPriority());
+    	return itemRepository.save(existingpriority);
+    }
+}

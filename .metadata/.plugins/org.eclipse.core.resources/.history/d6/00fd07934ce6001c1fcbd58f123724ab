@@ -1,0 +1,5 @@
+package com.ItemCommentsService.entity;
+
+public class Item {
+
+}

@@ -1,0 +1,8 @@
+package com.ItemCommentsService.entity;
+
+@Entity
+@Table(name = "User")
+@EntityListeners(AuditingEntityListener.class)
+public class User {
+
+}

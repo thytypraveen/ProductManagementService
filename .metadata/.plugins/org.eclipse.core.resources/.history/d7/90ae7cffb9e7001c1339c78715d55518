@@ -1,0 +1,15 @@
+package com.ItemCommentService.entity;
+
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+public class CommentsDTO {
+	 private long commentId;
+		private String comments; 
+		@ManyToOne(fetch = FetchType.LAZY)
+		@JoinColumn(name = "itemId", nullable = false)
+		private Item item;
+		private Long userId;
+
+}

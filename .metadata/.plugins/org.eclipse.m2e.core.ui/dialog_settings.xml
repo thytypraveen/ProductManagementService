@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="MavenProjectImportWizardPage">
+		<list key="rootDirectory">
+			<item value="C:\Users\PTHYTY\Downloads\ItemCommentsService"/>
+			<item value="C:\Users\PTHYTY\Downloads\ItemService"/>
+			<item value="C:\Users\PTHYTY\Downloads\discoveryclient"/>
+			<item value="C:\Users\PTHYTY\Downloads\EurekaClient"/>
+			<item value="C:\Users\PTHYTY\Downloads\Eurekaserver"/>
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+	</section>
+	<section name="org.eclipse.m2e.core.pom.overview">
+	</section>
+	<section name="org.eclipse.m2e.core.pom.dependencies">
+	</section>
+</section>

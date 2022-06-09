@@ -1,0 +1,30 @@
+package com.ItemCommentService.service;
+import java.util.Date;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ItemCommentService.repository.ItemRepository;
+import com.ItemCommentService.repository.UserRepository;
+import com.ItemCommentsService.entity.Item;
+
+import ItemcommentService.exception.ResourceNotFoundException;
+
+@Service
+public class ItemService {
+	 @Autowired
+	    private ItemRepository itemRepository;
+
+	    @Autowired
+	    private UserRepository userRepository;
+
+
+	public Optional<Item> addItem(Long id, Item item) {
+        return Optional.ofNullable(userRepository.findById(id).map(user -> {
+            item.setUser(user);
+            return itemRepository.save(item);
+        }).orElseThrow(() -> new ResourceNotFoundException("UserId" + id + "Not Found")));
+    }
+	
+}

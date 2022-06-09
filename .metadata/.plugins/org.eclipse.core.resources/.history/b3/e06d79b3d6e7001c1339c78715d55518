@@ -1,0 +1,18 @@
+package ItemcommentService.exception;
+
+import org.springframework.web.bind.annotation.ControllerAdvice;
+
+@ControllerAdvice
+public class ControllerExceptionHandler {
+	@ExceptionHandler(value = {ResourceNotFoundException.class, CertainException.class})
+	  public ResponseEntity<ErrorMessage> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+	    ErrorMessage message = new ErrorMessage(
+	        status,
+	        date,
+	        ex.getMessage(),
+	        description);
+	    
+	    return new ResponseEntity<ErrorMessage>(message, HttpStatus.NOT_FOUND);
+	  }
+
+}

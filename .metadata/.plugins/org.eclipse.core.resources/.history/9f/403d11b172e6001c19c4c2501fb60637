@@ -1,0 +1,5 @@
+package ItemcommentService.exception;
+
+public class ResourceNotFoundException {
+
+}

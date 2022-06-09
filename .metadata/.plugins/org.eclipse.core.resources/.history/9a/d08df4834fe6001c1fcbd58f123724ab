@@ -1,0 +1,5 @@
+package com.ItemCommentService.repository;
+
+public interface UserRepository {
+
+}

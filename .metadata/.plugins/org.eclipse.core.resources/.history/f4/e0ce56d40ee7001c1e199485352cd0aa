@@ -1,0 +1,18 @@
+package com.ItemCommentService.service;
+
+import javax.validation.constraints.NotNull;
+
+import org.springframework.stereotype.Service;
+
+import com.ItemCommentsService.entity.User;
+
+
+
+@Service
+public class UserService {
+
+	public User createUser(@NotNull User user) {
+        return userRepository.save(user);
+    }
+
+}

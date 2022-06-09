@@ -1,0 +1,17 @@
+package com.ItemCommentService.service;
+
+import org.springframework.stereotype.Service;
+
+import com.ItemCommentsService.entity.User;
+
+
+@Service
+public class UserService {
+	 @Autowired
+	    private UserRepository userRepository;
+
+	public User createUser(@NotNull User user) {
+        return userRepository.save(user);
+    }
+
+}

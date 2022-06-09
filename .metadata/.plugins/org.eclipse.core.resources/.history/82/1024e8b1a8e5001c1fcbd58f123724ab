@@ -1,0 +1,16 @@
+
+public class HelloWebClientController {
+	 List<ServiceInstance> instances = discoveryClient.getInstances("hello-service");
+     if (instances != null && instances.size() > 0) {//todo: replace with a load balancing mechanism
+         ServiceInstance serviceInstance = instances.get(0);
+         String url = serviceInstance.getUri().toString();
+         url = url + "/hello";
+         RestTemplate restTemplate = new RestTemplate();
+         HelloObject helloObject = restTemplate.getForObject(url,
+                 HelloObject.class);
+         model.addAttribute("msg", helloObject.getMessage());
+         model.addAttribute("time", LocalDateTime.now());
+     }
+     return "hello-page";
+
+}

@@ -1,0 +1,14 @@
+package com.ItemCommentService.repository;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.ItemCommentsService.entity.Comments;
+import com.ItemCommentsService.entity.Item;
+
+@Repository
+public interface ItemRepository extends JpaRepository<Item,Long> {
+
+}

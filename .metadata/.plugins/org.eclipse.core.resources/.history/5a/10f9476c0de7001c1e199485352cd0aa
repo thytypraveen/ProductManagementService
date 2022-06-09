@@ -1,0 +1,32 @@
+package com.ItemCommentsService.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "User")
+@EntityListeners(AuditingEntityListener.class)
+public class User {
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long Userid;
+    private String userName;
+    private long ContactNumber;
+    private String Email;
+    private String password;
+	
+
+}

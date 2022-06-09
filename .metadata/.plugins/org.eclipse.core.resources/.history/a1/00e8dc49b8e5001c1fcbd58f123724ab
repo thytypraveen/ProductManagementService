@@ -1,0 +1,87 @@
+package com.capillary.Controller;
+
+import java.util.List;
+
+import javax.ws.rs.QueryParam;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.capillary.Model.Item;
+import com.capillary.Model.User;
+import com.capillary.Repository.UserRepository;
+import com.capillary.Service.UserService;
+
+@RestController
+@RequestMapping("/users")
+
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+   
+    @GetMapping("")
+    public List<User> getUsers(){
+        return userService.getAllUsers();
+    }
+
+    @PostMapping("/adduser")
+    public User create(@RequestBody User ur){
+        return userService.createUser(ur);
+    }
+
+
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable(value = "id")Long uid){
+        return userService.findUser(uid);
+    }
+
+    @PutMapping("/{id}")
+    public User update(@PathVariable(value = "id")Long uid,@RequestBody User usr){
+        return userService.updateUser(uid,usr);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable(value = "id")Long uid){
+        userService.deleteUser(uid);
+
+    }
+    @GetMapping("/{uid}/{sid}")
+    public List<Item> getUserbyId(@PathVariable(value = "uid")Long uid,@PathVariable(value = "sid")Long sid) {
+
+			return userService.checkuserId(uid, sid);
+		
+    }
+
+    
+    @GetMapping("/items/{id}/{superiorId}") 
+	  public List<Item>getItemsbyId(@PathVariable(value = "id")Long id,@PathVariable(value ="superiorId")Long superiorId) 
+	  { 
+		  return userService.checkuserId(id,superiorId); 
+	  }
+	 
+	 
+    
+	  @GetMapping("/items")
+	  public List<Item> getItemsbyIds(@QueryParam("superiorId")
+	  Long superiorId,@QueryParam("id")Long id)
+	  { 
+		  return userService.checkuserId(id,superiorId);
+	  
+	  }
+    
+    
+    
+
+}

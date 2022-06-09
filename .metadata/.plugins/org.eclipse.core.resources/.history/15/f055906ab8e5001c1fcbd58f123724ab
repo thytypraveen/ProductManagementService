@@ -1,0 +1,125 @@
+package com.capillary.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.capillary.Exception.ResourceNotFoundException;
+import com.capillary.Model.Comments;
+import com.capillary.Model.Item;
+import com.capillary.Repository.CommentsRepository;
+import com.capillary.Repository.ItemRepository;
+import com.capillary.Repository.UserRepository;
+
+@Service
+public class CommentsService {
+		
+	@Autowired
+	private CommentsRepository commentrepo;
+	
+	 @Autowired
+	    private ItemService itemService;
+	   
+	 public Comments addComment(Long uid,String title,Comments comment){
+		    List<Item> l1 = itemService.getItemByName(uid,title);
+		    Iterator<Item> it = l1.listIterator();
+		    while (it.hasNext()){
+		        Item item = it.next();  // item take the value 1
+		        comment.setItem(item);  // setting the comments for i st item
+		        Date d = new Date();
+		        comment.setCreatedTime(d);
+		        comment.setUpdatedTime(d);
+		        comment.setUserId(uid);
+		        commentrepo.save(comment);
+		        return comment;
+		    }
+		    return new Comments();
+		}
+
+		public List<Comments> getComments(Long uid,String title){
+		    List<Item> l1 = itemService.getItemByName(uid,title);
+		    Iterator<Item> it = l1.listIterator();
+		    List<Comments> lc = new ArrayList<>();
+		    while (it.hasNext()) {
+		        Long id = it.next().getItemId();
+		     List<Comments> l =   commentrepo.findAll().stream().filter(comment -> comment.getItem().getItemId() == id).collect(Collectors.toList());
+		    lc.addAll(l);
+		    }
+		    return lc;
+		}
+	 
+		public void updateComments(Long uid,String title,String comments,Comments comm){
+			List<Comments> lc = getComments(uid, title);
+			Iterator<Comments> it = lc.listIterator();
+			while (it.hasNext()){
+			Comments cmt = it.next();
+			if(cmt.getComments().startsWith(comments)){
+			System.out.println(cmt.getComments());
+			Long id = cmt.getCommentId();
+			System.out.println(id);
+			cmt.setComments(comm.getComments());
+			System.out.println("new" +comm.getComments());
+			commentrepo.save(cmt);
+
+			}
+			}
+			}
+		
+		
+		
+		
+		 public void deleteCommentName(Long uid, String title){
+		        List<Item> l1 = itemService.getItemByName(uid, title);
+		        Iterator<Item> itr = l1.listIterator();
+		        while (itr.hasNext()){
+		        	  Long id = itr.next().getItemId();
+		        	  List<Comments> l =   commentrepo.findAll().stream().filter(comment -> comment.getItem().getItemId() == id).collect(Collectors.toList());
+		        	  Iterator<Comments> itr1 = l.listIterator();
+		        	 while(itr1.hasNext()) {
+		        		 Long id1 = itr.next().getItemId();
+		        		 commentrepo.deleteById(id1);
+		        	 }
+		        }
+		    }
+		
+	   
+		
+		
+		
+		
+	
+		
+		/*  public void deleteCommentsById(Long uid,Comments comment) { 
+			  List<Item> itm = itemService.getAll(uid); 
+			  Iterator<Item> it = itm.listIterator();
+			  while(it.hasNext()) {
+			     Long id = it.next().getItemId(); 
+			    commentrepo.deleteById(id);
+		  } }*/
+		
+		
+		
+		 
+		
+		public void deleteCommentsBycommentId(Long id) {
+			commentrepo.deleteById(id);
+		}
+		
+		public void deleteComment(Long id) {
+			commentrepo.deleteById(id);
+		}
+			
+}
+
+
+

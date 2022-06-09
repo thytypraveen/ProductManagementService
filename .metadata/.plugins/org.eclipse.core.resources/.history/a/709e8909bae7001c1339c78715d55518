@@ -1,0 +1,9 @@
+package com.ItemCommentService.entity;
+
+public class CommentsDTO {
+	 private long commentId;
+		private String comments; 
+		private Item item;
+		private Long userId;
+
+}
